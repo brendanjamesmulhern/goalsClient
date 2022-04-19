@@ -21,3 +21,19 @@ export const updateGoal = (email, id, out) => {
 export const deleteGoal = (email, id) => {
     return axios.delete(url + '/api/deleteGoal/' + email + '/' + id);
 };
+
+export const signUp = (email, password) => {
+    const out = {
+        email: email,
+        password: password
+    };
+    return axios.post(url + '/api/signUp', out);
+};
+
+export const login = (email, password) => {
+    const out = {
+        email: email,
+        password: password
+    };
+    return axios.post(url + '/api/login', out);
+};

@@ -4,7 +4,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { getGoals, addGoal, deleteGoal, getOneGoal, updateGoal } from './service/service';
 
-const GoalsBody = () => {
+// Fix goal is null error
+
+const GoalsBody = ({ auth }) => {
     const [error, setError] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const [goals, setGoals] = React.useState(null);
@@ -12,7 +14,7 @@ const GoalsBody = () => {
     const [goalSelected, setGoalSelected] = React.useState(null);
     const [goalEdit, setGoalEdit] = React.useState(null);
     const handleOpen = (id) => {
-        getOneGoal('brendanjamesmulhern2@gmail.com', id)
+        getOneGoal(auth, id)
             .then(res => {
                 setGoalSelected(res.data);
                 setOpen(true);
@@ -26,7 +28,7 @@ const GoalsBody = () => {
        getTheGoals();
     }, []);
     const getTheGoals = () => {
-        getGoals('brendanjamesmulhern2@gmail.com')
+        getGoals(auth)
             .then(res => {
                 console.log(res['data']);
                 setGoals(res['data']);
@@ -43,7 +45,7 @@ const GoalsBody = () => {
         const out = {
             title: goal,
         };
-        addGoal('brendanjamesmulhern2@gmail.com', out)
+        addGoal(auth, out)
             .then(res => {
                 setGoal(null);
                 getTheGoals();
@@ -61,7 +63,7 @@ const GoalsBody = () => {
         const out = {
             title: goalEdit,
         };
-        updateGoal('brendanjamesmulhern2@gmail.com', goalSelected._id, out)
+        updateGoal(auth, goalSelected._id, out)
             .then(res => {
                 console.log(res['data']);
                 getTheGoals();
@@ -99,7 +101,7 @@ const GoalsBody = () => {
                                         </div>
                                     : null }
                                 </Modal>
-                                <Button onClick={() => deleteGoal('brendanjamesmulhern2@gmail.com', goal._id).then(res => getTheGoals()).catch(err => console.error(err))}>Delete</Button>
+                                <Button onClick={() => deleteGoal(auth, goal._id).then(res => getTheGoals()).catch(err => console.error(err))}>Delete</Button>
                                 <div>{error ? console.log(error) : null}</div>
                             </div>
                         ))}
@@ -121,16 +123,12 @@ const GoalsBody = () => {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
                 <List>
-                    <ListItem style={{ display: 'flex', flexDirection: 'column' }}>
+                    <ListItem style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <div style={{ display: 'flex' }}>
                             <input onChange={handleGoalChange} style={{ textAlign: 'center' }} type="text" placeholder="Goal" />
                             <Button onClick={handleSubmit}>Add</Button>
                         </div> 
-                        <div>Loading...</div>
-                        <div style={{ display: 'flex' }}>
-                            <Button>Edit</Button>
-                            <Button>Delete</Button>
-                        </div>
+                        <div>Create A Goal!</div>
                     </ListItem>
                 </List>
             </div>
